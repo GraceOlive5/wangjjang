@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>왕짱 가족여행 🏕️</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Nanum Gothic',sans-serif;background:#fff;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes gentleBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes bob0{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
+@keyframes bob1{0%,100%{transform:translateY(0) rotate(2deg)}50%{transform:translateY(-10px) rotate(-3deg)}}
+@keyframes bob2{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-16px) rotate(2deg)}}
+@keyframes roadScroll{to{background-position:-40px 0}}
+@keyframes popIn{from{transform:scale(0.8) translateY(18px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.i-tag{animation:fadeUp .6s .10s both}
+.i-icon{animation:fadeUp .6s .30s both,gentleBounce 3s 1.2s ease-in-out infinite}
+.i-ttl{animation:fadeUp .6s .46s both}
+.i-sub{animation:fadeUp .6s .60s both}
+.i-date{animation:fadeUp .6s .72s both}
+.i-btns{animation:fadeUp .6s .86s both}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const{useState,useEffect}=React;
+const PINK="#F06FA0",SKY="#4BBAD8",ORANGE="#F07C3E";
+const PINK_L="#FEF0F6",SKY_L="#E8F6FB",ORANGE_L="#FEF1E8";
+const FLOATS=[
+  {em:"🌸",top:"7%",left:"5%",sz:30,dur:7,dl:0},{em:"💙",top:"11%",left:"22%",sz:17,dur:9,dl:.3},
+  {em:"🧡",top:"8%",right:"6%",sz:25,dur:8,dl:.6},{em:"🌸",top:"28%",right:"4%",sz:19,dur:7,dl:.2},
+  {em:"💙",top:"52%",left:"4%",sz:21,dur:6.5,dl:.8},{em:"🧡",top:"60%",right:"5%",sz:27,dur:8.5,dl:.4},
+  {em:"🌸",bottom:"22%",left:"13%",sz:19,dur:7.5,dl:.9},{em:"💙",bottom:"18%",right:"10%",sz:17,dur:9,dl:.5},
+  {em:"🧡",top:"40%",left:"3%",sz:22,dur:8,dl:.7},{em:"🌸",top:"35%",right:"3%",sz:15,dur:6,dl:.1},
+];
+const CARS=[
+  {car:"🚗",speed:2.6,start:-60,glow:PINK},
+  {car:"🚙",speed:2.6,start:-110,glow:SKY},
+  {car:"🚕",speed:2.6,start:-160,glow:ORANGE},
+];
+function isPastEvent(endH,endDay){
+  const now=new Date();
+  const base=endDay===1?new Date("2026-05-04"):new Date("2026-05-05");
+  base.setHours(Math.floor(endH),(endH%1)*60,0,0);
+  return now>base;
+}
+const CHECKLIST=[
+  {emoji:"🤗",label:"긍정적이고 서로 배려하는 마음가짐!",color:PINK,wide:true},
+  {emoji:"💭",label:"요즘 근심 1개 + 소망 1개\n(파자마 파티 때 나눌 거예요!)",color:SKY,wide:true},
+  {emoji:"😴",label:"파자마\n파자마 파티용! 잘 때 입는 편한 옷 입고 만나요~",color:ORANGE,wide:true},
+  {emoji:"🌞",label:"선크림 + 모자\n야외활동 있으니 필수!",color:ORANGE,wide:false},
+  {emoji:"🪥",label:"칫솔·세면도구",color:SKY,wide:false},
+  {emoji:"👟",label:"운동복·운동화",color:PINK,wide:false},
+  {emoji:"💊",label:"상비약",color:SKY,wide:false},
+  {emoji:"🔌",label:"폰 충전기",color:ORANGE,wide:false},
+  {emoji:"🍬",label:"간식",color:PINK,wide:false},
+  {emoji:"👕",label:"여벌 옷",color:SKY,wide:false},
+];
+const DAY1=[
+  {icon:"🚗",time:"~ 12:00",endH:12,endDay:1,title:"이동",desc:"가평으로 출발!",
+   cars:[{label:"1호차",color:PINK,members:"하은 · 세용 · 선호 · 수호 · 수현"},{label:"2호차",color:SKY,members:"하늘 · 민정 · 왕건 · 일숙"},{label:"3호차",color:ORANGE,members:"하영 · 황제"}]},
+  {icon:"🍗",time:"12:00 – 13:00",endH:13,endDay:1,title:"점심 · 조약돌닭갈비",
+   desc:"삼삼조약돌숯불닭갈비 — 조약돌 위에서 구워먹는 닭갈비",
+   addr:"📍 경기 가평군 청평면 여울길 52",map:"https://map.naver.com/v5/search/삼삼조약돌숯불닭갈비"},
+  {icon:"🏨",time:"13:00 – 13:30",endH:13.5,endDay:1,title:"숙소 이동 · 대교 마이다스 호텔",
+   addr:"📍 경기도 가평군 청평면 북한강로 2245",map:"https://map.naver.com/v5/search/대교마이다스호텔",
+   rooms:[{who:"엄빠방",type:"디럭스 트윈"},{who:"하은방",type:"디럭스 헐리우드"},{who:"하늘방",type:"디럭스 더블"},{who:"하영방",type:"디럭스 더블"}],
+   note:"* 방번호 추후 업데이트 예정"},
+  {icon:"🎒",time:"13:30 – 14:00",endH:14,endDay:1,title:"짐 맡기고 야외 운동장 이동",
+   desc:"로비에 짐 맡긴 뒤 야외 운동장으로",tags:["📌 주차장 C옆","🏀 2층 프론트 농구공·축구공 대여"]},
+  {icon:"🏆",time:"14:00 – 16:00",endH:16,endDay:1,title:"특별순서1 ⭐ 왕짱 가족 운동회!",desc:"신나는 2시간, 온 가족 대결!",agenda:true},
+  {icon:"🛋️",time:"16:00 – 17:30",endH:17.5,endDay:1,title:"체크인 및 휴식",desc:"호텔 주변도 산책하고 낮잠도 자고 편히 시간을 보내다 만나요 🌿"},
+  {icon:"🚶",time:"17:30 – 18:00",endH:18,endDay:1,title:"저녁 장소로 이동",desc:"가깝지만 차를 타고 이동해요 🚗"},
+  {icon:"🍲",time:"18:00 – 19:00",endH:19,endDay:1,title:"저녁 · 삼원식당 (토종닭백숙)",
+   addr:"📍 경기 가평군 설악면 유명로 2330 삼원식당",map:"https://map.naver.com/v5/search/삼원식당 가평"},
+  {icon:"🎉",time:"19:00 – 20:30",endH:20.5,endDay:1,title:"특별순서2 패밀리 파자마 파티 🌙",
+   pajamaParty:true,addr:"📍 하은이네 방 집합 (방번호 추후 업데이트 예정)",tags:["😴 파자마 입고 모여요!"]},
+  {icon:"🌙",time:"20:30 ~",endH:24,endDay:1,title:"자유시간 및 취침"},
+];
+const DAY2=[
+  {icon:"🌅",time:"07:00",endH:7,endDay:2,title:"기상"},
+  {icon:"🍳",time:"08:00",endH:8,endDay:2,title:"조식",desc:"호텔 조식"},
+  {icon:"🌲",time:"09:00 – 10:00",endH:10,endDay:2,title:"청평자연휴양림 산책",
+   desc:"소나무·잣나무 숲길 & 청평호반 전망 산책",
+   addr:"📍 경기 가평군 청평면 북한강로2246번길 8-6",map:"https://map.naver.com/v5/search/청평자연휴양림"},
+  {icon:"🧳",time:"11:00",endH:11,endDay:2,title:"체크아웃"},
+  {icon:"🍜",time:"12:00",endH:13,endDay:2,title:"점심 · 누마우동 가평본점 + 카페 후 해산 🎉",
+   addr:"📍 가평 (주소 사전 확인 필요)",map:"https://map.naver.com/v5/search/누마우동 가평"},
+];
+function loadChecked(){try{const s=localStorage.getItem("wj-checklist");return s?new Set(JSON.parse(s)):new Set();}catch{return new Set();}}
+function saveChecked(set){try{localStorage.setItem("wj-checklist",JSON.stringify([...set]));}catch{}}
+function ChecklistOverlay({onClose}){
+  const[checked,setChecked]=useState(()=>loadChecked());
+  const[justChecked,setJustChecked]=useState(null);
+  const allDone=checked.size===CHECKLIST.length;
+  function toggle(i){setChecked(prev=>{const next=new Set(prev);if(next.has(i))next.delete(i);else{next.add(i);setJustChecked(i);setTimeout(()=>setJustChecked(null),400);}saveChecked(next);return next;});}
+  return(
+    <div onClick={e=>{if(e.target===e.currentTarget)onClose();}} style={{position:"fixed",inset:0,zIndex:9999,background:"rgba(0,0,0,0.36)",backdropFilter:"blur(6px)",display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+      <div style={{background:"#fff",borderRadius:26,padding:"28px 22px",maxWidth:400,width:"100%",boxShadow:"0 24px 64px rgba(0,0,0,0.18)",position:"relative",animation:"popIn .38s cubic-bezier(.34,1.56,.64,1) both",maxHeight:"88vh",overflowY:"auto"}}>
+        <button onClick={onClose} style={{position:"absolute",top:14,right:14,width:30,height:30,borderRadius:"50%",border:"none",background:"#f2f2f2",fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+        <div style={{textAlign:"center",marginBottom:20}}>
+          <div style={{fontSize:36,marginBottom:8}}>🎒</div>
+          <h2 style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:20,fontWeight:800,color:"#1a1a1a",marginBottom:6}}>필수 준비물 체크!</h2>
+          <p style={{fontSize:12,color:"#aaa",lineHeight:1.6}}>다 챙겼으면 출발해요 😊</p>
+          <div style={{marginTop:14,background:"#f0f0f0",borderRadius:10,height:7,overflow:"hidden"}}>
+            <div style={{height:"100%",borderRadius:10,background:`linear-gradient(90deg,${PINK},${SKY},${ORANGE})`,width:`${(checked.size/CHECKLIST.length)*100}%`,transition:"width .35s ease"}}/>
+          </div>
+          <div style={{fontSize:11,fontWeight:800,color:"#aaa",marginTop:7}}>{checked.size} / {CHECKLIST.length} 완료</div>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+          {CHECKLIST.map((item,i)=>{const on=checked.has(i);return(
+            <button key={i} onClick={()=>toggle(i)} style={{gridColumn:item.wide?"1 / -1":"auto",display:"flex",flexDirection:item.wide?"row":"column",alignItems:"center",justifyContent:"center",gap:item.wide?10:6,padding:item.wide?"13px 18px":"16px 10px",borderRadius:16,border:"none",cursor:"pointer",background:on?item.color:"#f8f8f8",color:on?"#fff":"#555",fontFamily:"'Nanum Gothic',sans-serif",fontWeight:on?800:700,fontSize:item.wide?12.5:12,textAlign:item.wide?"left":"center",boxShadow:on?`0 4px 16px ${item.color}55`:"none",transform:justChecked===i?"scale(1.05)":"scale(1)",transition:"background .22s,color .22s,transform .22s,box-shadow .22s",position:"relative",overflow:"hidden"}}>
+              {on&&!item.wide&&<div style={{position:"absolute",top:6,right:8,fontSize:12,fontWeight:800,color:"rgba(255,255,255,0.9)"}}>✓</div>}
+              <span style={{fontSize:item.wide?22:28,lineHeight:1,flexShrink:0}}>{item.emoji}</span>
+              <span style={{whiteSpace:"pre-line",lineHeight:1.5}}>{item.label}</span>
+              {on&&item.wide&&<span style={{marginLeft:"auto",fontSize:16}}>✓</span>}
+            </button>
+          );})}
+        </div>
+        {allDone
+          ?<div style={{textAlign:"center",padding:"14px 16px",background:`linear-gradient(135deg,${PINK_L},${SKY_L},${ORANGE_L})`,borderRadius:14,fontSize:13,fontWeight:800,color:"#555",animation:"popIn .4s cubic-bezier(.34,1.56,.64,1) both"}}>🎉 완벽해요! 이제 출발할 준비 끝~</div>
+          :<div style={{textAlign:"center",fontSize:11.5,color:"#ccc",padding:"10px 0"}}>탭해서 챙긴 짐을 체크하세요</div>}
+      </div>
+    </div>
+  );
+}
+function formatTimeLeft(t){
+  if(!t)return"";
+  if(t.includes("–")){const[a,b]=t.split("–").map(s=>s.trim());return React.createElement(React.Fragment,null,a,React.createElement("br"),React.createElement("span",{style:{fontSize:9,opacity:0.7}},"↓"),React.createElement("br"),b);}
+  if(t.startsWith("~"))return React.createElement(React.Fragment,null,t.replace("~","").trim(),React.createElement("br"),React.createElement("span",{style:{fontSize:10,opacity:0.6}},"까지"));
+  if(t.endsWith("~"))return React.createElement(React.Fragment,null,t.replace("~","").trim(),React.createElement("br"),React.createElement("span",{style:{fontSize:10,opacity:0.6}},"~"));
+  return t;
+}
+function Card({ev,onAgenda,past}){
+  const[hov,setHov]=useState(false);
+  return(
+    <div onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:past?"#fafafa":"#fff",borderRadius:14,padding:"14px 18px",border:"1px solid #f0f0f0",borderLeft:past?"3px solid #e0e0e0":"3px solid #e4e4e4",boxShadow:hov&&!past?"0 5px 22px rgba(0,0,0,0.09)":"0 1px 8px rgba(0,0,0,0.04)",transform:hov&&!past?"translateX(4px)":"translateX(0)",transition:"transform .22s,box-shadow .22s",opacity:past?0.5:1}}>
+      <div style={{display:"flex",gap:12,alignItems:"flex-start"}}>
+        <div style={{fontSize:20,flexShrink:0,marginTop:14,lineHeight:1,filter:past?"grayscale(1)":"none"}}>{ev.icon}</div>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontSize:14,fontWeight:800,color:past?"#aaa":"#1a1a1a",lineHeight:1.35,marginBottom:4}}>{ev.title}</div>
+          {ev.desc&&<div style={{fontSize:12,color:past?"#bbb":"#666",lineHeight:1.75}}>{ev.desc}</div>}
+          {ev.cars&&!past&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:5}}>
+            {ev.cars.map((c,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:7,background:c.color+"18",borderRadius:8,padding:"5px 10px"}}>
+              <span style={{fontSize:10,fontWeight:800,color:c.color,minWidth:32}}>{c.label}</span>
+              <span style={{fontSize:11.5,color:"#555",lineHeight:1.4}}>{c.members}</span>
+            </div>)}
+          </div>}
+          {ev.rooms&&!past&&<div style={{marginTop:8,display:"grid",gridTemplateColumns:"1fr 1fr",gap:5}}>
+            {ev.rooms.map((r,i)=><div key={i} style={{background:"#f7f7f7",borderRadius:8,padding:"6px 10px",fontSize:11,color:"#666",lineHeight:1.5}}>
+              <span style={{fontWeight:800,color:"#444",display:"block"}}>{r.who}</span>{r.type}
+            </div>)}
+          </div>}
+          {ev.pajamaParty&&!past&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
+            {[
+              {icon:"🍩",title:"다과 & 근황 토크",desc:"다과를 먹으며 서로의 요즘 이야기를 나눠봐요!"},
+              {icon:"🙏",title:"기도파티",desc:"각자 요즘 제일 걱정인 것 1가지(또는 버리고 싶은 습관)와 꼭 이루고 싶은 소원 1가지를 준비해요. 한 명씩 나누고 함께 짧게 기도해요!"},
+              {icon:"🎲",title:"보드게임",desc:"다양한 보드게임으로 유쾌하게 마무리!"},
+            ].map((item,i)=><div key={i} style={{background:"#fafafa",borderRadius:10,padding:"8px 12px",borderLeft:`3px solid ${[PINK,SKY,ORANGE][i]}`}}>
+              <div style={{fontSize:12,fontWeight:800,color:"#333",marginBottom:2}}>{item.icon} {item.title}</div>
+              <div style={{fontSize:11,color:"#888",lineHeight:1.6}}>{item.desc}</div>
+            </div>)}
+          </div>}
+          {ev.tags&&<div style={{marginTop:5,display:"flex",flexWrap:"wrap",gap:4}}>
+            {ev.tags.map((t,i)=><span key={i} style={{display:"inline-block",fontSize:10.5,background:t.includes("파자마")?PINK_L:"#f5f5f5",color:t.includes("파자마")?PINK:"#888",border:t.includes("파자마")?`1px solid ${PINK}44`:"none",borderRadius:8,padding:"3px 9px",fontWeight:t.includes("파자마")?800:400}}>{t}</span>)}
+          </div>}
+          {ev.addr&&!past&&<div style={{marginTop:4}}><span style={{display:"inline-block",fontSize:10.5,background:"#f5f5f5",color:"#888",borderRadius:6,padding:"2px 8px"}}>{ev.addr}</span></div>}
+          {ev.note&&<div style={{fontSize:10.5,color:"#bbb",marginTop:3}}>{ev.note}</div>}
+          {!past&&<div style={{display:"flex",flexWrap:"wrap",gap:6,marginTop:(ev.map||ev.agenda)?8:0}}>
+            {ev.map&&<a href={ev.map} target="_blank" rel="noopener" style={{display:"inline-flex",alignItems:"center",gap:4,background:"#03c75a",color:"#fff",fontSize:10.5,fontWeight:800,padding:"5px 13px",borderRadius:20,textDecoration:"none"}}>📍 네이버 지도로 보기</a>}
+            {ev.agenda&&<button onClick={onAgenda} style={{display:"inline-flex",alignItems:"center",gap:4,background:`linear-gradient(135deg,${PINK},${ORANGE})`,color:"#fff",fontSize:10.5,fontWeight:800,padding:"5px 13px",borderRadius:20,border:"none",cursor:"pointer"}}>📋 운동회 아젠다 보기</button>}
+          </div>}
+        </div>
+      </div>
+    </div>
+  );
+}
+function Timeline({data,onAgenda}){
+  return(
+    <div style={{position:"relative"}}>
+      <div style={{position:"absolute",left:78,top:0,bottom:0,width:2,borderRadius:2,background:`linear-gradient(to bottom,${PINK},${SKY},${ORANGE},${PINK})`,opacity:0.25}}/>
+      {data.map((ev,i)=>{
+        const past=isPastEvent(ev.endH,ev.endDay);
+        return(
+          <div key={i} style={{display:"flex",alignItems:"flex-start",marginBottom:10}}>
+            <div style={{width:68,flexShrink:0,textAlign:"right",paddingRight:14,paddingTop:15,fontSize:11,fontWeight:800,lineHeight:1.4,color:past?"#ccc":"#888",fontFamily:"'Nanum Gothic',sans-serif",letterSpacing:"-0.3px"}}>{formatTimeLeft(ev.time)}</div>
+            <div style={{width:14,flexShrink:0,display:"flex",justifyContent:"center",paddingTop:18}}>
+              <div style={{width:10,height:10,borderRadius:"50%",zIndex:2,background:past?"#e0e0e0":"#fff",border:`2px solid ${past?"#ccc":"#bbb"}`,boxShadow:past?"none":`0 0 0 3px ${PINK}22`}}/>
+            </div>
+            <div style={{flex:1,paddingLeft:10}}><Card ev={ev} onAgenda={onAgenda} past={past}/></div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+function DaySection({chip,chipGrad,name,data,onAgenda}){
+  return(
+    <div style={{marginBottom:44}}>
+      <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:24}}>
+        <div style={{background:chipGrad,color:"#fff",fontSize:10,fontWeight:800,letterSpacing:"1.5px",padding:"6px 16px",borderRadius:30,whiteSpace:"nowrap"}}>{chip}</div>
+        <div style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:17,fontWeight:700,color:"#1a1a1a"}}>{name}</div>
+        <div style={{flex:1,height:1,background:"#f0f0f0"}}/>
+      </div>
+      <Timeline data={data} onAgenda={onAgenda}/>
+    </div>
+  );
+}
+function AgendaModal({onClose}){
+  return(
+    <div onClick={e=>{if(e.target===e.currentTarget)onClose();}} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.32)",zIndex:9999,display:"flex",alignItems:"center",justifyContent:"center",padding:20,backdropFilter:"blur(6px)"}}>
+      <div style={{background:"#fff",borderRadius:24,padding:"32px 26px",maxWidth:420,width:"100%",boxShadow:"0 24px 64px rgba(0,0,0,0.16)",position:"relative",animation:"popIn .35s cubic-bezier(.34,1.56,.64,1) both",maxHeight:"82vh",overflowY:"auto"}}>
+        <button onClick={onClose} style={{position:"absolute",top:14,right:14,width:30,height:30,borderRadius:"50%",border:"none",background:"#f2f2f2",fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
+        <div style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:20,fontWeight:800,marginBottom:4}}>🏆 왕짱 가족 운동회</div>
+        <div style={{fontSize:11.5,color:"#aaa",lineHeight:1.65,marginBottom:20}}>14:00 – 16:00 · 야외 운동장 (주차장 C옆)<br/>농구공·축구공 대여: 2층 프론트</div>
+        {[
+          {num:1,icon:"🦵",title:"3인 4각",desc:"세 명인데 다리는 4개라구요? 어떻게 하는 게임일까요? 🤔"},
+          {num:2,icon:"⚽",title:"꼬깔축구",desc:"새로운 재미의 축구 게임을 선사합니다!"},
+          {num:3,icon:"🎈",title:"매너남 풍선씨",desc:"매너 좋은 풍선씨는 모자를 떨어뜨리지 않죠 🎩"},
+          {num:4,icon:"🏸",title:"배드민턴",desc:"팀 대항 배드민턴 토너먼트!"},
+          {num:5,icon:"🏀",title:"나는 농구천재일수도?",desc:"자유투 도전! 숨겨진 농구 천재를 찾아라"},
+          {num:6,icon:"💗",title:"레벨업! 무궁화 꽃이 피었습니다",desc:"클래식 게임, 왕짱 가족 버전으로!"},
+        ].map((item,i)=>(
+          <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start",padding:"10px 12px",marginBottom:6,background:"#fafafa",borderRadius:12,borderLeft:`3px solid ${[PINK,SKY,ORANGE,PINK,SKY,ORANGE][i]}`}}>
+            <div style={{width:24,height:24,borderRadius:"50%",flexShrink:0,background:[PINK,SKY,ORANGE,PINK,SKY,ORANGE][i],color:"#fff",fontSize:11,fontWeight:800,display:"flex",alignItems:"center",justifyContent:"center"}}>{item.num}</div>
+            <div>
+              <div style={{fontSize:13,fontWeight:800,color:"#222",marginBottom:2}}>{item.icon} {item.title}</div>
+              <div style={{fontSize:11.5,color:"#999",lineHeight:1.5}}>{item.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+function Schedule({onAgenda}){
+  return(
+    <div style={{background:"#fff",minHeight:"100vh",fontFamily:"'Nanum Gothic',sans-serif"}}>
+      <div style={{maxWidth:620,margin:"0 auto",padding:"0 18px 80px"}}>
+        <div style={{textAlign:"center",padding:"60px 20px 40px"}}>
+          <h1 style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:"clamp(26px,7vw,40px)",fontWeight:800,color:"#1a1a1a",lineHeight:1.2,marginBottom:16}}>🏕️ 왕짱 가족여행</h1>
+          <div style={{display:"inline-flex",alignItems:"center",gap:7,background:"#f8f8f8",border:"1px solid #eee",padding:"8px 18px",borderRadius:40,fontSize:13,fontWeight:700,color:"#888"}}>
+            📅&ensp;5월 4일(일) – 5월 5일(월) · 경기도 가평
+          </div>
+          <div style={{display:"flex",height:3,borderRadius:3,overflow:"hidden",margin:"22px auto 0",maxWidth:100}}>
+            <div style={{flex:1,background:PINK}}/><div style={{flex:1,background:SKY}}/><div style={{flex:1,background:ORANGE}}/>
+          </div>
+          <div style={{marginTop:18,display:"inline-flex",alignItems:"center",gap:7,background:"#fffbf0",border:"1px solid #f0e8cc",padding:"8px 16px",borderRadius:30,fontSize:11.5,color:"#b8922a"}}>
+            ✨ 모든 일정은 상황에 따라 유연하게 변경될 수 있어요!
+          </div>
+        </div>
+        <DaySection chip="DAY 1 · 5 / 4" chipGrad={`linear-gradient(135deg,${PINK},#e04880)`} name="출발 & 운동회 🏆" data={DAY1} onAgenda={onAgenda}/>
+        <div style={{display:"flex",alignItems:"center",gap:14,margin:"16px 0 40px"}}>
+          <div style={{flex:1,height:1,background:"#f0f0f0"}}/>
+          <div style={{fontSize:10.5,fontWeight:800,letterSpacing:1,color:SKY,background:SKY_L,border:`1px solid ${SKY}44`,padding:"5px 15px",borderRadius:20,whiteSpace:"nowrap"}}>☀️ 다음 날 아침</div>
+          <div style={{flex:1,height:1,background:"#f0f0f0"}}/>
+        </div>
+        <DaySection chip="DAY 2 · 5 / 5" chipGrad={`linear-gradient(135deg,${SKY},#30a0c8)`} name="산책 & 해산 🌲" data={DAY2} onAgenda={onAgenda}/>
+        <div style={{textAlign:"center",padding:"28px 0 8px",borderTop:"1px solid #f0f0f0"}}>
+          <div style={{display:"flex",justifyContent:"center",gap:14,marginBottom:10}}>
+            {[{color:PINK,cheek:"#f9a8c4"},{color:SKY,cheek:"#93ddf0"},{color:ORANGE,cheek:"#ffc89a"}].map((b,i)=>(
+              <svg key={i} width="38" height="38" viewBox="0 0 40 40" fill="none">
+                <circle cx="10" cy="10" r="7" fill={b.color}/>
+                <circle cx="30" cy="10" r="7" fill={b.color}/>
+                <circle cx="10" cy="10" r="4" fill="white" opacity="0.3"/>
+                <circle cx="30" cy="10" r="4" fill="white" opacity="0.3"/>
+                <circle cx="20" cy="22" r="14" fill={b.color}/>
+                <ellipse cx="20" cy="26" rx="7" ry="8" fill="white" opacity="0.2"/>
+                <circle cx="15" cy="18" r="2.2" fill="white"/>
+                <circle cx="25" cy="18" r="2.2" fill="white"/>
+                <circle cx="15.5" cy="18.5" r="1.2" fill="#333"/>
+                <circle cx="25.5" cy="18.5" r="1.2" fill="#333"/>
+                <circle cx="15.9" cy="18" r="0.5" fill="white"/>
+                <circle cx="25.9" cy="18" r="0.5" fill="white"/>
+                <circle cx="11" cy="23" r="3.5" fill={b.cheek} opacity="0.5"/>
+                <circle cx="29" cy="23" r="3.5" fill={b.cheek} opacity="0.5"/>
+                <ellipse cx="20" cy="22" rx="2.2" ry="1.4" fill="#333" opacity="0.6"/>
+                <path d="M17.5 24.5 Q20 27 22.5 24.5" stroke="#333" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.6"/>
+              </svg>
+            ))}
+          </div>
+          <div style={{fontSize:11.5,color:"#ccc"}}>왕짱 가족여행 2026 · 즐거운 1박2일!</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+function CtaBtn({onClick}){
+  const[hov,setHov]=useState(false);
+  return(
+    <button onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+      style={{display:"inline-flex",alignItems:"center",gap:10,background:`linear-gradient(135deg,${PINK} 0%,${SKY} 50%,${ORANGE} 100%)`,color:"#fff",fontFamily:"'Nanum Gothic',sans-serif",fontSize:15,fontWeight:800,padding:"17px 38px",borderRadius:60,border:"none",cursor:"pointer",boxShadow:hov?"0 10px 36px rgba(0,0,0,0.18)":"0 4px 20px rgba(0,0,0,0.12)",transform:hov?"translateY(-3px) scale(1.04)":"translateY(0)",transition:"transform .22s,box-shadow .22s"}}>
+      일정 보러가기&nbsp;<span style={{fontSize:18,display:"inline-block",transform:hov?"translateX(6px)":"translateX(0)",transition:"transform .25s"}}>🚗</span>
+    </button>
+  );
+}
+function Intro({onStart,exiting,onChecklist}){
+  const[cars,setCars]=useState(CARS.map(c=>c.start));
+  useEffect(()=>{
+    const id=setInterval(()=>{setCars(prev=>prev.map((x,i)=>{const nx=x+CARS[i].speed;return nx>(window.innerWidth+40)?-70:nx;}));},30);
+    return()=>clearInterval(id);
+  },[]);
+  return(
+    <div style={{position:"fixed",inset:0,background:"#fff",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",overflow:"hidden",fontFamily:"'Nanum Gothic',sans-serif",zIndex:100,transform:exiting?"translateY(-105%)":"translateY(0)",opacity:exiting?0:1,transition:"transform .85s cubic-bezier(.76,0,.24,1),opacity .85s"}}>
+      {FLOATS.map((f,i)=><span key={i} style={{position:"absolute",fontSize:f.sz,opacity:0.2,pointerEvents:"none",userSelect:"none",top:f.top,left:f.left,right:f.right,bottom:f.bottom,animation:`bob${i%3} ${f.dur}s ${f.dl}s ease-in-out infinite`}}>{f.em}</span>)}
+      <div style={{textAlign:"center",position:"relative",zIndex:2,padding:"0 28px 68px",maxWidth:400}}>
+        <div className="i-tag" style={{fontSize:10,fontWeight:800,letterSpacing:"3px",textTransform:"uppercase",marginBottom:18,background:`linear-gradient(90deg,${PINK},${SKY},${ORANGE})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Family Trip · May 2026</div>
+        <div className="i-icon" style={{fontSize:60,marginBottom:14,display:"block"}}>🏕️</div>
+        <h1 className="i-ttl" style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:"clamp(34px,9vw,54px)",fontWeight:800,letterSpacing:-0.5,color:"#1a1a1a",lineHeight:1.15,marginBottom:12}}>왕짱<br/>가족여행</h1>
+        <p className="i-sub" style={{fontSize:"clamp(14px,4vw,17px)",color:"#666",lineHeight:1.6,marginBottom:8}}>다같이 여행을 떠나볼까요? 🗺️</p>
+        <p className="i-date" style={{fontSize:10,fontWeight:700,letterSpacing:"2.5px",color:"#bbb",textTransform:"uppercase",marginBottom:28}}>May 4 – 5, 2026 · Gapyeong</p>
+        <div className="i-btns" style={{display:"flex",flexDirection:"column",alignItems:"center",gap:12}}>
+          <CtaBtn onClick={onStart}/>
+          <button onClick={onChecklist}
+            style={{display:"inline-flex",alignItems:"center",gap:8,background:`linear-gradient(135deg,${PINK_L},${SKY_L},${ORANGE_L})`,color:"#555",fontFamily:"'Nanum Gothic',sans-serif",fontSize:14,fontWeight:800,padding:"13px 28px",borderRadius:40,border:`1.5px solid ${PINK}55`,cursor:"pointer",boxShadow:`0 2px 16px ${PINK}22`,transition:"all .2s"}}
+            onMouseEnter={e=>{e.currentTarget.style.boxShadow=`0 4px 20px ${PINK}44`;e.currentTarget.style.transform="translateY(-2px)";}}
+            onMouseLeave={e=>{e.currentTarget.style.boxShadow=`0 2px 16px ${PINK}22`;e.currentTarget.style.transform="translateY(0)";}}>
+            🎒 출발 전 준비물 체크하기
+          </button>
+        </div>
+        <div style={{marginTop:22,display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap"}}>
+          {[
+            {role:"기획",who:"하은 & 민정",color:PINK},
+            {role:"총무",who:"하늘",color:SKY},
+            {role:"다과",who:"하영",color:ORANGE},
+          ].map((c,i)=>(
+            <div key={i} style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(255,255,255,0.7)",border:"1px solid #f0f0f0",borderRadius:20,padding:"4px 11px",fontSize:11,color:"#aaa",backdropFilter:"blur(4px)"}}>
+              <span style={{fontWeight:800,color:c.color}}>{c.role}</span>
+              <span>{c.who}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{position:"absolute",bottom:0,left:0,right:0,height:58,overflow:"hidden"}}>
+        <div style={{position:"absolute",bottom:0,left:0,right:0,height:42,background:`linear-gradient(90deg,${PINK_L} 0%,${PINK_L} 33%,${SKY_L} 33%,${SKY_L} 66%,${ORANGE_L} 66%,${ORANGE_L} 100%)`,borderTop:"2px solid #eee",opacity:0.85}}/>
+        <div style={{position:"absolute",bottom:18,left:0,right:0,height:2,backgroundImage:"repeating-linear-gradient(to right,transparent 0,transparent 16px,#ddd 16px,#ddd 32px)",animation:"roadScroll .85s linear infinite"}}/>
+        {cars.map((x,i)=><div key={i} style={{position:"absolute",bottom:8+i*0.5,left:x,filter:`drop-shadow(0 2px 8px ${CARS[i].glow}99) drop-shadow(1px 2px 2px rgba(0,0,0,0.08))`}}>
+          <span style={{fontSize:24,lineHeight:1,display:"block",transform:"scaleX(-1)"}}>{CARS[i].car}</span>
+        </div>)}
+      </div>
+    </div>
+  );
+}
+function App(){
+  const[phase,setPhase]=useState("intro");
+  const[showChecklist,setShowChecklist]=useState(false);
+  const[showAgenda,setShowAgenda]=useState(false);
+  function startJourney(){setPhase("exiting");setTimeout(()=>setPhase("schedule"),920);}
+  return(
+    <>
+      {phase!=="schedule"&&<Intro onStart={startJourney} exiting={phase==="exiting"} onChecklist={()=>setShowChecklist(true)}/>}
+      {phase==="schedule"&&<Schedule onAgenda={()=>setShowAgenda(true)}/>}
+      {showChecklist&&<ChecklistOverlay onClose={()=>setShowChecklist(false)}/>}
+      {showAgenda&&<AgendaModal onClose={()=>setShowAgenda(false)}/>}
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>

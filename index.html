@@ -75,12 +75,12 @@ const DAY1=[
    note:"* 방번호 추후 업데이트 예정"},
   {icon:"🎒",time:"13:30 – 14:00",endH:14,endDay:1,title:"짐 맡기고 야외 운동장 이동",
    desc:"로비에 짐 맡긴 뒤 야외 운동장으로",tags:["📌 주차장 C옆","🏀 2층 프론트 농구공·축구공 대여"]},
-  {icon:"🏆",time:"14:00 – 16:00",endH:16,endDay:1,title:"특별순서1 ⭐ 왕짱 가족 운동회!",desc:"신나는 2시간, 온 가족 대결!",agenda:true},
+  {icon:"🏆",time:"14:00 – 16:00",endH:16,endDay:1,title:"[Event 1] ⭐ 왕짱 가족 운동회 ⭐ ",desc:"신나는 2시간, 온 가족 대결!",agenda:true},
   {icon:"🛋️",time:"16:00 – 17:30",endH:17.5,endDay:1,title:"체크인 및 휴식",desc:"호텔 주변도 산책하고 낮잠도 자고 편히 시간을 보내다 만나요 🌿"},
   {icon:"🚶",time:"17:30 – 18:00",endH:18,endDay:1,title:"저녁 장소로 이동",desc:"가깝지만 차를 타고 이동해요 🚗"},
   {icon:"🍲",time:"18:00 – 19:00",endH:19,endDay:1,title:"저녁 · 삼원식당 (토종닭백숙)",
    addr:"📍 경기 가평군 설악면 유명로 2330 삼원식당",map:"https://map.naver.com/v5/search/삼원식당 가평"},
-  {icon:"🎉",time:"19:00 – 20:30",endH:20.5,endDay:1,title:"특별순서2 패밀리 파자마 파티 🌙",
+  {icon:"🎉",time:"19:00 – 20:30",endH:20.5,endDay:1,title:"[Event 2] 🌙 패밀리 파자마 파티 🌙",
    pajamaParty:true,addr:"📍 하은이네 방 집합 (방번호 추후 업데이트 예정)",tags:["😴 파자마 입고 모여요!"]},
   {icon:"🌙",time:"20:30 ~",endH:24,endDay:1,title:"자유시간 및 취침"},
 ];
@@ -161,7 +161,7 @@ function Card({ev,onAgenda,past}){
           {ev.pajamaParty&&!past&&<div style={{marginTop:8,display:"flex",flexDirection:"column",gap:6}}>
             {[
               {icon:"🍩",title:"다과 & 근황 토크",desc:"다과를 먹으며 서로의 요즘 이야기를 나눠봐요!"},
-              {icon:"🙏",title:"기도파티",desc:"각자 요즘 제일 걱정인 것 1가지(또는 버리고 싶은 습관)와 꼭 이루고 싶은 소원 1가지를 준비해요. 한 명씩 나누고 함께 짧게 기도해요!"},
+              {icon:"🙏",title:"기도 파티",desc:"각자 요즘 제일 걱정인 것 1가지(또는 버리고 싶은 습관)와 꼭 이루고 싶은 소원(or 기도 제목) 1가지를 준비해요. 한 명씩 나누고 함께 짧게 기도해요!"},
               {icon:"🎲",title:"보드게임",desc:"다양한 보드게임으로 유쾌하게 마무리!"},
             ].map((item,i)=><div key={i} style={{background:"#fafafa",borderRadius:10,padding:"8px 12px",borderLeft:`3px solid ${[PINK,SKY,ORANGE][i]}`}}>
               <div style={{fontSize:12,fontWeight:800,color:"#333",marginBottom:2}}>{item.icon} {item.title}</div>

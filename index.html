@@ -327,9 +327,7 @@ function Intro({onStart,exiting,onChecklist}){
         </div>
         <div style={{marginTop:22,display:"flex",gap:6,justifyContent:"center",flexWrap:"wrap"}}>
           {[
-            {role:"기획",who:"하은 & 민정",color:PINK},
-            {role:"총무",who:"하늘",color:SKY},
-            {role:"다과",who:"하영",color:ORANGE},
+
           ].map((c,i)=>(
             <div key={i} style={{display:"inline-flex",alignItems:"center",gap:4,background:"rgba(255,255,255,0.7)",border:"1px solid #f0f0f0",borderRadius:20,padding:"4px 11px",fontSize:11,color:"#aaa",backdropFilter:"blur(4px)"}}>
               <span style={{fontWeight:800,color:c.color}}>{c.role}</span>

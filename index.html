@@ -90,10 +90,8 @@ const DAY2=[
   {icon:"🌲",time:"09:00 – 10:00",endH:10,endDay:2,title:"청평자연휴양림 산책",
    desc:"소나무·잣나무 숲길 & 청평호반 전망 산책",
    addr:"📍 경기 가평군 청평면 북한강로2246번길 8-6",map:"https://map.naver.com/v5/search/청평자연휴양림"},
-  {icon:"🧳",time:"11:00",endH:11,endDay:2,title:"체크아웃"},
-  {icon:"🍜",time:"12:00",endH:13,endDay:2,title:"점심 · 누마우동 가평본점 + 카페 후 해산 🎉",
-   addr:"📍 가평 (주소 사전 확인 필요)",map:"https://map.naver.com/v5/search/누마우동 가평"},
-];
+  {icon:"🧳",time:"11:00",endH:11,endDay:2,title:"체크아웃 및 집으로!"},
+
 function loadChecked(){try{const s=localStorage.getItem("wj-checklist");return s?new Set(JSON.parse(s)):new Set();}catch{return new Set();}}
 function saveChecked(set){try{localStorage.setItem("wj-checklist",JSON.stringify([...set]));}catch{}}
 function ChecklistOverlay({onClose}){

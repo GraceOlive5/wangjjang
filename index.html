@@ -220,6 +220,25 @@ function AgendaModal({onClose}){
         <button onClick={onClose} style={{position:"absolute",top:14,right:14,width:30,height:30,borderRadius:"50%",border:"none",background:"#f2f2f2",fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center"}}>✕</button>
         <div style={{fontFamily:"'Nanum Myeongjo',serif",fontSize:20,fontWeight:800,marginBottom:4}}>🏆 왕짱 가족 운동회</div>
         <div style={{fontSize:11.5,color:"#aaa",lineHeight:1.65,marginBottom:20}}>14:00 – 16:00 · 야외 운동장 (주차장 C옆)<br/>농구공·축구공 대여: 2층 프론트</div>
+        <div style={{marginBottom:20}}>
+          <div style={{fontSize:10,fontWeight:800,letterSpacing:"2px",color:"#bbb",textTransform:"uppercase",marginBottom:10}}>👥 조 편성</div>
+          <div style={{display:"flex",flexDirection:"column",gap:7}}>
+            {[
+              {name:"🌳 나무조",members:"선호 · 세용 · 하늘",color:ORANGE},
+              {name:"🫒 올리조",members:"수호 · 하영 · 황제",color:SKY},
+              {name:"🌿 리브조",members:"수현 · 왕건 · 일숙",color:PINK},
+            ].map((t,i)=>(
+              <div key={i} style={{display:"flex",alignItems:"center",gap:10,background:t.color+"15",borderRadius:12,padding:"9px 14px",border:`1px solid ${t.color}33`}}>
+                <span style={{fontWeight:800,fontSize:13,color:t.color,minWidth:60}}>{t.name}</span>
+                <span style={{fontSize:12,color:"#555"}}>{t.members}</span>
+              </div>
+            ))}
+          </div>
+          <div style={{marginTop:10,textAlign:"center",fontSize:11.5,color:"#aaa",background:"#f8f8f8",borderRadius:10,padding:"7px 12px"}}>
+            🎤 MC: 이선생 + 홍선생
+          </div>
+        </div>
+        <div style={{width:"100%",height:1,background:"#f0f0f0",marginBottom:16}}/>
         {[
           {num:1,icon:"🦵",title:"3인 4각",desc:"세 명인데 다리는 4개라구요? 어떻게 하는 게임일까요? 🤔"},
           {num:2,icon:"⚽",title:"꼬깔축구",desc:"새로운 재미의 축구 게임을 선사합니다!"},
